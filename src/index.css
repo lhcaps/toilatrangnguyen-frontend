@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Valky';
+  src: url('/fonts/MTD.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --background: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #75706f;
+  --accent: #8e05c2;
+  --border: #acaba9;
+  --form-bg: #eaeaea;
+}
+
+[data-theme='dark'] {
+  --background: #121212;
+  --text-primary: #eaeaea;
+  --text-secondary: #acaba9;
+  --accent: #8e05c2;
+  --border: #2c2c2c;
+  --form-bg: #2c2c2c;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Valky', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--background);
+  color: var(--text-primary);
+  transition: all 0.5s ease;
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+  font-family: 'Valky', serif;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  transition: color 0.5s ease;
+}
+
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.8rem; }
+
+.theme-toggle {
+  text-align: center;
+  margin-top: 1rem;
+}
+.theme-toggle i {
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.theme-toggle i:hover {
+  color: var(--accent);
+  transform: scale(1.1);
+}
+
+.container {
+  max-width: 420px;
+  width: 90%;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: var(--form-bg);
+  border-radius: 8px;
+  box-shadow: 0 0 12px var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: background 0.5s ease, box-shadow 0.3s ease;
+}
+
+.top {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.top i {
+  font-size: 1.4rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.top i:hover {
+  color: var(--accent);
+}
+
+.divider {
+  width: 100%;
+  border-bottom: 1px solid var(--text-primary);
+  text-align: center;
+  line-height: 0.1rem;
+  margin: 2rem 0;
+}
+.divider span {
+  background: var(--form-bg);
+  padding: 0 10px;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+label {
+  margin: 8px 0 4px;
+  font-weight: 600;
+}
+input, select {
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--background);
+  color: var(--text-primary);
+  transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.remember {
+  display: flex;
+  align-items: center;
+}
+.remember label {
+  margin-left: 8px;
+  font-size: 0.9rem;
+}
+input[type="checkbox"] {
+  cursor: pointer;
+}
+button {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  margin: 16px 0;
+}
+button:hover {
+  background: #a509de;
+  transform: translateY(-2px);
+}
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.85rem;
+}
+.create {
+  margin-top: 1rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  align-self: center;
+}
+.create:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 478px) {
+  .container {
+    width: 95%;
+    padding: 1rem;
+  }
+  h1 { font-size: 1.8rem; }
+  .app { padding: 0 1rem; }
+}

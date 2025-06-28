@@ -1,0 +1,91 @@
+.profile-container {
+  padding: 20px;
+}
+
+.card {
+  display: flex;
+  align-items: flex-start;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  max-width: 600px;
+  background: #f9f9f9;
+}
+
+.card-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-right: 16px;
+}
+
+.card-body {
+  flex: 1;
+}
+
+.card-body h2 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.card-body h4 {
+  margin: 4px 0 12px;
+  color: #666;
+}
+
+.card-body p {
+  margin: 4px 0;
+}
+
+.card-tags {
+  margin: 12px 0;
+}
+
+.card-tag {
+  display: inline-block;
+  background: #4caf50;
+  color: white;
+  padding: 4px 8px;
+  margin: 2px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.card-actions button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  border: none;
+  background: #2196f3;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.card-actions button:hover {
+  background: #1976d2;
+}
+
+.error-text {
+  color: red;
+}
+
+.avatar-upload {
+  display: inline-block;
+  background: #2196f3;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.avatar-upload:hover {
+  background: #1976d2;
+}
+
+.profile-title {
+  color: black !important; /* !important đảm bảo không bị theme override */
+}
+.profile-title {
+  background: transparent;
+}
