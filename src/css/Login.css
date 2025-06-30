@@ -1,4 +1,6 @@
-/* Tổng thể */
+/* login.css */
+
+/* Tổng thể trang login */
 .app {
   font-family: Arial, sans-serif;
   min-height: 100vh;
@@ -7,23 +9,30 @@
   align-items: center;
   background: var(--background);
   color: var(--text);
+  padding: 20px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* Box đăng nhập */
 .login {
   background: var(--container-bg);
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
   width: 100%;
   max-width: 400px;
+  border: 1px solid var(--border);
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
+/* Tiêu đề */
 h1 {
   text-align: center;
   margin-bottom: 20px;
+  color: var(--accent);
 }
 
-/* Icon mạng xã hội */
+/* Biểu tượng mạng xã hội */
 .top {
   text-align: center;
   margin-bottom: 10px;
@@ -33,18 +42,43 @@ h1 {
   font-size: 24px;
   margin: 0 8px;
   cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
+.top i:hover {
+  color: var(--accent);
+  transform: scale(1.1);
+}
+
+/* Đường phân cách */
 .divider {
   text-align: center;
-  margin: 10px 0;
+  margin: 12px 0;
+  position: relative;
 }
+
+.divider::before,
+.divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: var(--border);
+}
+
+.divider::before { left: 0; }
+.divider::after { right: 0; }
 
 .divider span {
   background: var(--container-bg);
   padding: 0 10px;
+  position: relative;
+  z-index: 1;
 }
 
+/* Form */
 form {
   display: flex;
   flex-direction: column;
@@ -55,16 +89,24 @@ form label {
   font-weight: bold;
 }
 
-form input[type="email"],
-form input[type="password"],
-form select,
-form input[type="date"] {
-  padding: 8px;
+form input,
+form select {
+  padding: 10px;
   margin-top: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 5px;
+  background: var(--form-bg);
+  color: var(--text);
+  transition: border-color 0.3s ease, background 0.3s ease;
 }
 
+form input:focus,
+form select:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+/* Button */
 button {
   margin-top: 15px;
   padding: 10px;
@@ -72,14 +114,16 @@ button {
   color: var(--button-text);
   border: none;
   border-radius: 5px;
+  font-weight: bold;
   cursor: pointer;
+  transition: background 0.3s ease, opacity 0.3s ease;
 }
 
 button:hover {
   opacity: 0.9;
 }
 
-/* Remember Me */
+/* Checkbox remember me */
 .remember {
   display: flex;
   align-items: center;
@@ -90,14 +134,15 @@ button:hover {
   margin-left: 5px;
 }
 
-/* Bottom links */
+/* Link dưới form */
 .bottom {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 12px;
+  color: var(--accent);
 }
 
 .bottom a {
-  color: #3498db;
+  color: var(--accent);
   text-decoration: none;
 }
 
@@ -105,13 +150,7 @@ button:hover {
   text-decoration: underline;
 }
 
-.create {
-  text-align: center;
-  margin-top: 15px;
-  color: #3498db;
-  cursor: pointer;
-}
-
+/* Theme toggle icon */
 .theme-toggle {
   text-align: center;
   margin-top: 20px;
@@ -120,21 +159,31 @@ button:hover {
 .theme-toggle i {
   font-size: 24px;
   cursor: pointer;
+  color: var(--accent);
 }
 
-/* Theme light/dark */
+/* ======== Light Theme ======== */
 [data-theme="light"] {
   --background: #f0f0f0;
-  --container-bg: #fff;
-  --text: #333;
+  --container-bg: #ffffff;
+  --form-bg: #ffffff;
+  --text: #333333;
+  --text-secondary: #666666;
   --button-bg: #3498db;
-  --button-text: #fff;
+  --button-text: #ffffff;
+  --border: #cccccc;
+  --accent: #3498db;
 }
 
+/* ======== Dark Theme ======== */
 [data-theme="dark"] {
   --background: #121212;
   --container-bg: #1e1e1e;
+  --form-bg: #2c2c2c;
   --text: #f0f0f0;
+  --text-secondary: #aaaaaa;
   --button-bg: #3498db;
-  --button-text: #fff;
+  --button-text: #ffffff;
+  --border: #444444;
+  --accent: #3498db;
 }

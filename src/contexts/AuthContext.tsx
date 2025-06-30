@@ -3,43 +3,53 @@ import React, {
   useContext,
   useEffect,
   useState,
+  type ReactNode,
 } from "react";
-import type { ReactNode } from "react";
 
-type AuthContextType = {
+type UserType = {
   username: string | null;
   email: string | null;
+};
+
+type AuthContextType = {
+  user: UserType | null;
   isAuthenticated: boolean;
   login: (token: string) => void;
   logout: () => void;
 };
 
-// ✅ Khởi tạo context mặc định
 const AuthContext = createContext<AuthContextType>({
-  username: null,
-  email: null,
+  user: null,
   isAuthenticated: false,
   login: () => {},
   logout: () => {},
 });
 
-// ✅ Provider bao toàn app
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [username, setUsername] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(() => localStorage.getItem("token"));
+  const [user, setUser] = useState<UserType | null>(null);
 
   const isAuthenticated = !!token;
+
+  const parseToken = (token: string) => {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      return {
+        username: payload.username || null,
+        email: payload.email || null,
+      };
+    } catch {
+      return null;
+    }
+  };
 
   const login = (token: string) => {
     localStorage.setItem("token", token);
     setToken(token);
-
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      setUsername(payload.username || null);
-      setEmail(payload.email || null);
-    } catch {
+    const userData = parseToken(token);
+    if (userData) {
+      setUser(userData);
+    } else {
       logout();
     }
   };
@@ -47,28 +57,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
-    setUsername(null);
-    setEmail(null);
+    setUser(null);
   };
 
   useEffect(() => {
     if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setUsername(payload.username || null);
-        setEmail(payload.email || null);
-      } catch {
+      const userData = parseToken(token);
+      if (userData) {
+        setUser(userData);
+      } else {
         logout();
       }
     }
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ username, email, isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// ✅ Hook dùng trong component
 export const useAuth = () => useContext(AuthContext);

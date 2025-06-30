@@ -1,91 +1,138 @@
+/* profile.css */
+
 .profile-container {
+  font-family: Arial, sans-serif;
   padding: 20px;
-}
-
-.card {
+  min-height: 100vh;
   display: flex;
-  align-items: flex-start;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  max-width: 600px;
-  background: #f9f9f9;
+  justify-content: center;
+  align-items: center;
+  background: var(--background);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-.card-image {
+.profile-card {
+  background: var(--container-bg);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid var(--border);
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.profile-card img {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  margin-right: 16px;
+  object-fit: cover;
+  border: 3px solid var(--accent);
+  margin: 0 auto 20px;
+  display: block;
 }
 
-.card-body {
-  flex: 1;
+.profile-card h2 {
+  text-align: center;
+  font-size: 1.8em;
+  color: var(--accent);
+  margin-bottom: 5px;
 }
 
-.card-body h2 {
-  margin: 0;
-  font-size: 1.5em;
+.profile-card h4 {
+  text-align: center;
+  font-size: 1em;
+  color: var(--text-secondary);
+  margin-bottom: 15px;
+  font-style: italic;
 }
 
-.card-body h4 {
-  margin: 4px 0 12px;
-  color: #666;
+.profile-card p {
+  margin: 6px 0;
 }
 
-.card-body p {
-  margin: 4px 0;
-}
-
-.card-tags {
+.profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
   margin: 12px 0;
 }
 
-.card-tag {
-  display: inline-block;
-  background: #4caf50;
-  color: white;
+.profile-tag {
+  background: var(--accent);
+  color: #fff;
   padding: 4px 8px;
-  margin: 2px;
   border-radius: 4px;
   font-size: 0.85em;
 }
 
-.card-actions button {
-  margin-right: 8px;
-  padding: 6px 12px;
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.profile-actions button {
+  padding: 8px 16px;
   border: none;
-  background: #2196f3;
-  color: white;
-  border-radius: 4px;
+  border-radius: 5px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  font-weight: bold;
   cursor: pointer;
+  transition: background 0.3s ease, opacity 0.3s ease;
 }
 
-.card-actions button:hover {
-  background: #1976d2;
-}
-
-.error-text {
-  color: red;
+.profile-actions button:hover {
+  opacity: 0.9;
 }
 
 .avatar-upload {
   display: inline-block;
-  background: #2196f3;
-  color: white;
+  background: var(--button-bg);
+  color: var(--button-text);
   padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  margin-right: 8px;
+  margin: 10px auto 0;
+  text-align: center;
+  transition: opacity 0.3s ease;
 }
 
 .avatar-upload:hover {
-  background: #1976d2;
+  opacity: 0.9;
 }
 
-.profile-title {
-  color: black !important; /* !important đảm bảo không bị theme override */
+.error-text {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
 }
-.profile-title {
-  background: transparent;
+
+/* ======== Light Theme ======== */
+[data-theme="light"] {
+  --background: #f0f0f0;
+  --container-bg: #ffffff;
+  --text: #333333;
+  --text-secondary: #666666;
+  --button-bg: #3498db;
+  --button-text: #ffffff;
+  --border: #cccccc;
+  --accent: #3498db;
+}
+
+/* ======== Dark Theme ======== */
+[data-theme="dark"] {
+  --background: #121212;
+  --container-bg: #1e1e1e;
+  --text: #f0f0f0;
+  --text-secondary: #aaaaaa;
+  --button-bg: #3498db;
+  --button-text: #ffffff;
+  --border: #444444;
+  --accent: #3498db;
 }

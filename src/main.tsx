@@ -1,8 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
+import "./index.css"; // 👈 Đảm bảo đây import file chứa :root variables (globals.css)
 import App from "./App";
-import { AuthProvider } from "./contexts/AuthContext"; // 🔁 Import AuthProvider nếu bạn đặt trong context/
+import { AuthProvider } from "./contexts/AuthContext";
+import { ThemeProvider } from "./components/theme-provider"; // 👈 Import ThemeProvider
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {
@@ -11,8 +12,10 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <AuthProvider> {/* ✅ Bọc toàn bộ App trong AuthProvider */}
-      <App />
+    <AuthProvider>
+      <ThemeProvider> {/* ✅ Thêm ThemeProvider bao ngoài App */}
+        <App />
+      </ThemeProvider>
     </AuthProvider>
   </StrictMode>
 );

@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent
+} from "@/components/ui/card";
 
 type StudentProfile = {
   username: string;
@@ -23,16 +30,7 @@ const Profile: React.FC = () => {
   const [canUpdate, setCanUpdate] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | undefined>(undefined);
 
-  const navigate = useNavigate();
-
-  const logout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-
-  const goToLogin = () => {
-    navigate("/login");
-  };
+  const navigate = useNavigate(); // Vẫn dùng theme nếu cần cho logic khác (hoặc bỏ nếu không dùng)
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -53,8 +51,7 @@ const Profile: React.FC = () => {
         } else {
           setError(data.message || "Không thể tải hồ sơ.");
         }
-      } catch (err) {
-        console.error("Lỗi mạng:", err);
+      } catch {
         setError("Lỗi mạng. Vui lòng thử lại.");
       }
     };
@@ -71,11 +68,9 @@ const Profile: React.FC = () => {
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onloadend = () => setAvatarPreview(reader.result as string);
     reader.readAsDataURL(file);
-
     alert("Đã chọn ảnh. Chức năng upload cần API.");
   };
 
@@ -84,10 +79,8 @@ const Profile: React.FC = () => {
       alert("Bạn chỉ được cập nhật thông tin sau 3 ngày kể từ lần cập nhật trước.");
       return;
     }
-
     const token = localStorage.getItem("token");
     if (!token || !profile) return;
-
     try {
       const res = await fetch("/api/profile/update", {
         method: "POST",
@@ -98,7 +91,6 @@ const Profile: React.FC = () => {
           academicPerformance: profile.academicPerformance
         })
       });
-
       const data = await res.json();
       if (res.ok) {
         alert(data.message);
@@ -108,66 +100,75 @@ const Profile: React.FC = () => {
       } else {
         alert(data.message || "Cập nhật thất bại");
       }
-    } catch (err) {
-      console.error("Lỗi cập nhật:", err);
+    } catch {
       alert("Lỗi mạng. Vui lòng thử lại.");
     }
   };
 
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/app/login");
+  };
+
   return (
-    <div className="container">
-      <h1 className="text-2xl font-valky text-accent mb-4">Hồ sơ học sinh</h1>
-
-      {error && (
-        <div className="text-red-500 mb-4">
-          <p>{error}</p>
-          <button
-            onClick={goToLogin}
-            className="mt-2 text-white bg-accent px-4 py-2 rounded hover:bg-purple-600 transition"
-          >
-            Đăng nhập ngay
-          </button>
-        </div>
-      )}
-
-      {profile && (
-        <div className="card">
-          <img
-            src={avatarPreview || profile.avatarUrl || "/default-avatar.png"}
-            alt="Avatar"
-            className="w-32 h-32 rounded-full object-cover mx-auto mb-4"
-          />
-
-          <div className="text-center">
-            <h2 className="font-bold text-lg">{profile.username}</h2>
-            <p className="text-sm text-gray-500">Học sinh hệ thống Trạng Nguyên</p>
-            <p><strong>Email:</strong> {profile.email}</p>
-            <p><strong>Năm sinh:</strong> {profile.birthYear}</p>
-            <p><strong>Học vấn:</strong> {profile.educationLevel}</p>
-            <p><strong>Học lực:</strong> {profile.academicPerformance}</p>
-            <p><strong>Lần cập nhật cuối:</strong> {new Date(profile.lastUpdatedAt).toLocaleDateString()}</p>
-
-            <div className="mt-4 flex flex-col gap-2">
-              <label className="cursor-pointer inline-block text-accent underline">
-                Chọn ảnh đại diện
-                <input type="file" accept="image/*" onChange={handleAvatarUpload} hidden />
-              </label>
+    <div className="min-h-screen flex items-center justify-center bg-background text-foreground transition">
+      <Card className="max-w-lg w-full bg-card text-card-foreground border border-border shadow">
+        <CardHeader>
+          <CardTitle>Hồ sơ học sinh</CardTitle>
+          <CardDescription>
+            Quản lý thông tin cá nhân của bạn
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {error ? (
+            <div className="text-red-500 mb-4">
+              <p>{error}</p>
               <button
-                onClick={handleUpdateProfile}
-                className="bg-accent text-white rounded py-2 hover:bg-purple-600 transition"
+                onClick={() => navigate("/app/login")}
+                className="mt-2 bg-primary text-primary-foreground py-2 px-4 rounded"
               >
-                Cập nhật thông tin
-              </button>
-              <button
-                onClick={logout}
-                className="mt-auto text-sm text-red-400 hover:underline"
-              >
-                Đăng xuất
+                Đăng nhập ngay
               </button>
             </div>
-          </div>
-        </div>
-      )}
+          ) : profile && (
+            <>
+              <div className="flex justify-center mb-4">
+                <img
+                  src={avatarPreview || profile.avatarUrl || "/default-avatar.png"}
+                  alt="Avatar"
+                  className="w-32 h-32 rounded-full object-cover"
+                />
+              </div>
+              <div className="space-y-2 text-center">
+                <p><strong>Tên:</strong> {profile.username}</p>
+                <p><strong>Email:</strong> {profile.email}</p>
+                <p><strong>Năm sinh:</strong> {profile.birthYear}</p>
+                <p><strong>Học vấn:</strong> {profile.educationLevel}</p>
+                <p><strong>Học lực:</strong> {profile.academicPerformance}</p>
+                <p><strong>Cập nhật cuối:</strong> {new Date(profile.lastUpdatedAt).toLocaleDateString()}</p>
+              </div>
+              <div className="mt-4 space-y-2">
+                <label className="cursor-pointer inline-block text-primary underline">
+                  Chọn ảnh đại diện
+                  <input type="file" accept="image/*" onChange={handleAvatarUpload} hidden />
+                </label>
+                <button
+                  onClick={handleUpdateProfile}
+                  className="w-full bg-primary text-primary-foreground py-2 rounded"
+                >
+                  Cập nhật thông tin
+                </button>
+                <button
+                  onClick={logout}
+                  className="w-full text-red-500 hover:underline text-sm"
+                >
+                  Đăng xuất
+                </button>
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };

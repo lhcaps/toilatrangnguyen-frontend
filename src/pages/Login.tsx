@@ -1,10 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext"; // 📌 Đảm bảo đường dẫn đúng
+import { useAuth } from "../contexts/AuthContext";
+import { useTheme } from "../components/theme-provider";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter
+} from "@/components/ui/card";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth(); // ✅ Dùng context
+  const { login } = useAuth();
+  const { theme, setTheme } = useTheme();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,73 +35,84 @@ const Login: React.FC = () => {
       const data = await res.json();
 
       if (res.ok) {
-        login(data.token); // 🔐 lưu vào AuthContext + localStorage
-        console.log("Login success:", data);
-        navigate("/"); // ✅ Điều hướng về trang chủ
+        login(data.token);
+        navigate("/app/dashboard");
       } else {
         setError(data.message || "Đăng nhập thất bại");
       }
-    } catch (err) {
-      console.error("Login error:", err);
+    } catch {
       setError("Đã xảy ra lỗi khi đăng nhập.");
     }
   };
 
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
   return (
-    <div className="container">
-      <h1 className="text-2xl font-valky text-accent mb-4">Đăng nhập</h1>
-      <div className="top flex justify-around mb-4">
-        <i className="fab fa-google"></i>
-        <i className="fab fa-facebook-square"></i>
-        <i className="fab fa-linkedin"></i>
-        <i className="fab fa-twitter-square"></i>
-        <i className="fab fa-apple"></i>
-      </div>
-
-      <p className="divider"><span>Hoặc</span></p>
-
-      <form onSubmit={handleLogin} className="w-full">
-        <label htmlFor="email">E-mail</label>
-        <input
-          id="email"
-          type="email"
-          placeholder="Nhập email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        <label htmlFor="password">Mật khẩu</label>
-        <input
-          id="password"
-          type="password"
-          placeholder="Nhập mật khẩu"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        <div className="remember flex items-center mb-2">
-          <input
-            id="checkbox"
-            type="checkbox"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
-          />
-          <label htmlFor="checkbox" className="ml-2">Ghi nhớ đăng nhập</label>
-        </div>
-
-        <button type="submit" className="w-full bg-accent text-white py-2 rounded hover:bg-purple-600 transition">
-          Đăng nhập
-        </button>
-      </form>
-
-      {error && <p className="text-red-500 mt-2">{error}</p>}
-
-      <div className="bottom mt-2 flex justify-between text-sm">
-        <Link to="/reset-password" className="underline">Quên mật khẩu?</Link>
-        <Link to="/signup" className="underline">Tạo tài khoản</Link>
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-background text-foreground transition-colors duration-300">
+      <Card className="max-w-md w-full bg-card text-card-foreground border border-border shadow">
+        <CardHeader>
+          <CardTitle className="text-center">Đăng nhập</CardTitle>
+          <CardDescription className="text-center">
+            Đăng nhập bằng mạng xã hội hoặc email
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleLogin} className="space-y-3">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium mb-1">E-mail</label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-3 py-2 border rounded bg-background border-border text-foreground"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium mb-1">Mật khẩu</label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full px-3 py-2 border rounded bg-background border-border text-foreground"
+              />
+            </div>
+            <div className="flex items-center">
+              <input
+                id="remember"
+                type="checkbox"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+                className="mr-2"
+              />
+              <label htmlFor="remember" className="text-sm">Ghi nhớ đăng nhập</label>
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-primary text-primary-foreground py-2 rounded hover:opacity-90 transition"
+            >
+              Đăng nhập
+            </button>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="w-full border border-primary text-primary py-2 rounded hover:bg-primary hover:text-primary-foreground transition"
+            >
+              Đổi giao diện: {theme === "light" ? "Dark" : "Light"}
+            </button>
+          </form>
+          {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
+        </CardContent>
+        <CardFooter className="flex justify-between text-sm">
+          <Link to="/reset-password" className="underline">Quên mật khẩu?</Link>
+          <Link to="/signup" className="underline">Tạo tài khoản</Link>
+        </CardFooter>
+      </Card>
     </div>
   );
 };
